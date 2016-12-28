@@ -3,7 +3,6 @@ subprojects {
         // Maven repo with viewpagerindicator: https://github.com/Goddchen/mvn-repo
         mavenCentral()
         mavenLocal()
-        maven { url "https://jitpack.io" }
     }
 }
 
