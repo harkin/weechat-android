@@ -10,26 +10,26 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.nio.channels.SocketChannel;
 
-import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.SSLContext;
 
 
 public class SSLConnection extends AbstractConnection {
 
     private String server;
     private int port;
-    SSLSocketFactory sslSocketFactory;
+    SSLContext sslContext;
     private Socket sock;
 
-    public SSLConnection(String server, int port, SSLSocketFactory sslSocketFactory) {
+    public SSLConnection(String server, int port, SSLContext sslContext) {
         this.server = server;
         this.port = port;
-        this.sslSocketFactory = sslSocketFactory;
+        this.sslContext = sslContext;
     }
 
     @Override protected void doConnect() throws IOException {
         SocketChannel channel = SocketChannel.open();
         channel.connect(new InetSocketAddress(server, port));
-        sock = sslSocketFactory.createSocket(channel.socket(), server, port, true);
+        sock = sslContext.getSocketFactory().createSocket(channel.socket(), server, port, true);
         out = sock.getOutputStream();
         in = sock.getInputStream();
     }
