@@ -23,7 +23,9 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.SpannableString;
 import android.text.TextUtils.TruncateAt;
+import android.text.style.RelativeSizeSpan;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -143,15 +145,19 @@ public class CutePagerTitleStrip extends ViewGroup {
             ta.recycle();
         }
 
-        if (allCaps) {
-            setSingleLineAllCaps(mPrevText);
-            setSingleLineAllCaps(mCurrText);
-            setSingleLineAllCaps(mNextText);
-        } else {
-            mPrevText.setSingleLine();
-            mCurrText.setSingleLine();
-            mNextText.setSingleLine();
-        }
+//        if (allCaps) {
+//            setSingleLineAllCaps(mPrevText);
+//            setSingleLineAllCaps(mCurrText);
+//            setSingleLineAllCaps(mNextText);
+//        } else {
+//            mPrevText.setSingleLine();
+//            mCurrText.setSingleLine();
+//            mNextText.setSingleLine();
+//        }
+
+        mPrevText.setGravity(Gravity.CENTER_HORIZONTAL);
+        mCurrText.setGravity(Gravity.CENTER_HORIZONTAL);
+        mNextText.setGravity(Gravity.CENTER_HORIZONTAL);
 
         final float density = context.getResources().getDisplayMetrics().density;
         mScaledTextSpacing = (int) (TEXT_SPACING * density);
@@ -267,18 +273,41 @@ public class CutePagerTitleStrip extends ViewGroup {
 
         CharSequence text = null;
         if (currentItem >= 1 && adapter != null) text = adapter.getPageTitle(currentItem - 1);
+        if (text != null) {
+            String string = text.toString();
+            if (string.contains("\n")) {
+                SpannableString span = new SpannableString(text);
+                span.setSpan(new RelativeSizeSpan(0.7f), string.indexOf("\n"), string.length(), SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
+                text = span;
+            }
+        }
         mPrevText.setText(text);
 
 
         text = null;
         if (adapter != null && currentItem < itemCount) text = adapter.getPageTitle(currentItem);
         if (adapter != null && itemCount == 0) text = mEmptyText;
+
+        if (text != null) {
+            String string = text.toString();
+            if (string.contains("\n")) {
+                SpannableString span = new SpannableString(text);
+                span.setSpan(new RelativeSizeSpan(0.7f), string.indexOf("\n"), string.length(), SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
+                text = span;
+            }
+        }
         mCurrText.setText(text);
-
-
 
         text = null;
         if (currentItem + 1 < itemCount && adapter != null) text = adapter.getPageTitle(currentItem + 1);
+        if (text != null) {
+            String string = text.toString();
+            if (string.contains("\n")) {
+                SpannableString span = new SpannableString(text);
+                span.setSpan(new RelativeSizeSpan(0.7f), string.indexOf("\n"), string.length(), SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
+                text = span;
+            }
+        }
         mNextText.setText(text);
 
         // Measure everything
