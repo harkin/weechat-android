@@ -7,6 +7,7 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.SuperscriptSpan;
+import android.util.Log;
 
 import com.ubergeek42.WeechatAndroid.service.P;
 import com.ubergeek42.weechat.Color;
@@ -490,9 +491,11 @@ public class Buffer {
                 case '@': return 3; // Ops
                 case '%': return 4; // Half-Ops
                 case '+': return 5; // Voiced
+                case ' ': return 8;
+                default : return 7;
             }
-            return 100; // Other
         }
+
         @Override public int compare(Nick n1, Nick n2) {
             int p1 = prioritizePrefix(n1.prefix);
             int p2 = prioritizePrefix(n2.prefix);
